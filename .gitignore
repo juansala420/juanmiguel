@@ -1,0 +1,29 @@
+# Terraform: estado, planes y carpeta local de proveedores
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+# Variables locales (pueden contener datos de la cuenta)
+*.tfvars
+*.tfvars.json
+
+# Credenciales
+.aws/
+credentials
+.env
+.env.*
+*.pem
+*.key
+*.csv.key
+
+# Python y sistema
+__pycache__/
+.venv/
+.DS_Store
+*:Zone.Identifier
