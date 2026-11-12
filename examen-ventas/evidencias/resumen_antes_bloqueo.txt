@@ -1,0 +1,6 @@
+-- Resumen antes del bloqueo
+-- Consultado tras la ejecución manual__2026-11-12T12:18:36.961068+00:00 (escenario actualizada: freshness y build en success) y antes de preparar el escenario desactualizada, 2026-11-12T12:19:48Z
+['fecha_venta', 'numero_ventas', 'unidades_vendidas', 'ingreso_total']
+(datetime.date(2026, 1, 10), 2, 3, Decimal('46.00'))
+(datetime.date(2026, 1, 11), 3, 6, Decimal('51.25'))
+(datetime.date(2026, 1, 12), 1, 4, Decimal('12.40'))

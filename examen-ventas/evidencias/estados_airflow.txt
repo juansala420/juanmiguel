@@ -1,0 +1,33 @@
+# Estados en Airflow del DAG examen_ventas
+# Ejecuciones de la demostración: manual__2026-11-12T12:18:36.961068+00:00 (actualizada) y manual__2026-11-12T12:20:31.932608+00:00 (desactualizada).
+# Las dos primeras ejecuciones son un primer intento de la misma demostración.
+
+dag_id         run_id                                    state    execution_date                    start_date                        end_date
+examen_ventas  manual__2026-11-12T12:20:31.932608+00:00  failed   2026-11-12T12:20:31.932608+00:00  2026-11-12T12:20:32.468629+00:00  2026-11-12T12:20:43.032497+00:00
+examen_ventas  manual__2026-11-12T12:18:36.961068+00:00  success  2026-11-12T12:18:36.961068+00:00  2026-11-12T12:18:37.073647+00:00  2026-11-12T12:18:50.780174+00:00
+examen_ventas  manual__2026-11-12T12:12:50.198889+00:00  failed   2026-11-12T12:12:50.198889+00:00  2026-11-12T12:12:51.848382+00:00  2026-11-12T12:13:00.936428+00:00
+examen_ventas  manual__2026-11-12T12:10:07.313704+00:00  success  2026-11-12T12:10:07.313704+00:00  2026-11-12T12:10:08.226204+00:00  2026-11-12T12:10:21.385984+00:00
+
+## manual__2026-11-12T12:18:36.961068+00:00
+dag_id         execution_date                    task_id              state    start_date                        end_date
+examen_ventas  2026-11-12T12:18:36.961068+00:00  comprobar_freshness  success  2026-11-12T12:18:39.769505+00:00  2026-11-12T12:18:43.158659+00:00
+examen_ventas  2026-11-12T12:18:36.961068+00:00  construir_resumen    success  2026-11-12T12:18:46.397952+00:00  2026-11-12T12:18:50.049554+00:00
+
+## manual__2026-11-12T12:20:31.932608+00:00
+dag_id         execution_date                    task_id              state            start_date                        end_date
+examen_ventas  2026-11-12T12:20:31.932608+00:00  comprobar_freshness  failed           2026-11-12T12:20:36.107845+00:00  2026-11-12T12:20:41.340380+00:00
+examen_ventas  2026-11-12T12:20:31.932608+00:00  construir_resumen    upstream_failed  2026-11-12T12:20:41.619669+00:00  2026-11-12T12:20:41.619669+00:00
+
+## Archivos de log de tareas
+/state/logs/dag_id=examen_ventas/run_id=manual__2026-11-12T12:10:07.313704+00:00/task_id=comprobar_freshness/attempt=1.log
+/state/logs/dag_id=examen_ventas/run_id=manual__2026-11-12T12:10:07.313704+00:00/task_id=construir_resumen/attempt=1.log
+/state/logs/dag_id=examen_ventas/run_id=manual__2026-11-12T12:12:50.198889+00:00/task_id=comprobar_freshness/attempt=1.log
+/state/logs/dag_id=examen_ventas/run_id=manual__2026-11-12T12:18:36.961068+00:00/task_id=comprobar_freshness/attempt=1.log
+/state/logs/dag_id=examen_ventas/run_id=manual__2026-11-12T12:18:36.961068+00:00/task_id=construir_resumen/attempt=1.log
+/state/logs/dag_id=examen_ventas/run_id=manual__2026-11-12T12:20:31.932608+00:00/task_id=comprobar_freshness/attempt=1.log
+
+## Marcas INICIO dbt por tarea
+manual__2026-11-12T12:18:36.961068+00:00 comprobar_freshness: 1
+manual__2026-11-12T12:18:36.961068+00:00 construir_resumen: 1
+manual__2026-11-12T12:20:31.932608+00:00 comprobar_freshness: 1
+manual__2026-11-12T12:20:31.932608+00:00 construir_resumen: sin_log_ni_intento

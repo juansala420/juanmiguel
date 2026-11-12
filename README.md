@@ -1,4 +1,18 @@
-# Entregas en S3 consultadas con Athena y partition projection
+# Examen final de ingeniería de datos
+
+Este repositorio contiene dos puntos independientes:
+
+| Punto | Tema | Ubicación |
+| --- | --- | --- |
+| 1 | Entregas en S3 consultadas con Athena y partition projection (Terraform, Glue, Athena) | Raíz del repositorio (este README) |
+| 2 | Ventas diarias con control de actualidad (dbt, DuckDB, Airflow) | [examen-ventas/](examen-ventas/README.md) |
+
+El punto 1 se mantiene en la raíz porque su enunciado pide rutas relativas a la raíz del
+repositorio (por ejemplo, en `evidencias/ejecuciones_athena.csv`).
+
+---
+
+# Punto 1: entregas en S3 consultadas con Athena y partition projection
 
 Una empresa de mensajería recibe un CSV por día con los intentos de entrega. Los archivos
 quedan en S3, Glue Data Catalog guarda el esquema de la tabla y las reglas de partition
