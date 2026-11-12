@@ -2,65 +2,36 @@
 
 ## 1. ¿Por qué se pudo consultar el tercer día sin registrar una partición nueva?
 
-Porque la tabla `entregas_db.entregas` no depende de particiones guardadas en el catálogo, sino
-de **partition projection**. En Terraform (`infraestructura/principal.tf`) la tabla quedó con
-estas reglas desde el primer despliegue:
-
-- `projection.enabled = true` y `projection.fecha.type = date`.
-- `projection.fecha.format = yyyy-MM-dd`, con `interval = 1` e `interval.unit = DAYS`.
-- `projection.fecha.range = 2026-10-01,2026-10-03`.
-- `storage.location.template = s3://de-final-entregas-gr01-user-6/entregas/fecha=${fecha}/`.
-
-Con esas reglas, Athena no le pregunta a Glue qué particiones existen. En cada consulta calcula
-las fechas posibles del rango (01, 02 y 03 de octubre) y, para cada una, arma el prefijo de S3
-reemplazando `${fecha}` en la plantilla. Luego lee los objetos que encuentre en esos prefijos.
-
-El 3 de octubre ya estaba dentro del rango desde el `terraform apply` inicial
-(`evidencias/aplicacion_terraform.txt`, `evidencias/outputs.json`, salida `rango_proyeccion`).
-Antes de subir su archivo, ese prefijo estaba vacío y por eso las consultas iniciales solo
-devolvieron 12 registros: la proyección no crea datos ni garantiza que existan. Al subir
-`entregas/fecha=2026-10-03/entregas.csv`, el mismo prefijo que Athena ya calculaba empezó a tener
-un objeto, y la siguiente consulta lo leyó.
-
-La evidencia lo confirma:
-
-- `aws glue get-partitions` devuelve `0` particiones antes y después de cargar el día 3: nunca se
-  registró ninguna, ni con crawler, ni con `MSCK REPAIR TABLE`, ni con `ALTER TABLE ADD PARTITION`.
-- `resultados/final/verificacion_tercer_dia.csv` muestra los seis registros del 2026-10-03
-  (`ENV-013` a `ENV-018`) y `resultados/final/verificacion_total_registros.csv` muestra 18
-  registros en 3 fechas.
-- `resultados/final/intentos_por_fecha_estado.csv` y
-  `resultados/final/porcentaje_exito_por_fecha_ciudad.csv` incluyen el día 3 y coinciden con las
-  referencias finales. Las consultas son las mismas de la etapa inicial, sin cambios. Los
-  identificadores de cada ejecución están en `evidencias/ejecuciones_athena.csv`.
+Esto fue posible porque la tabla entregas_db.entregas utiliza partition projection, lo que significa que Athena no necesita que las particiones estén registradas en Glue para poder consultar los datos
+Desde el primer despliegue, en el archivo infraestructura/principal.tf, se configuró la proyección de fechas con el tipo date, el formato yyyy-MM-dd, un intervalo de un día y un rango desde 2026-10-01 hasta 2026-10-03. También se definió la ruta de los archivos en S3 con el formato `entregas/fecha=${fecha}/`
+Esto permite que Athena calcule automáticamente las fechas que debe consultar y construya las rutas correspondientes en S3
+Por eso, aunque el 3 de octubre todavía no tuviera ningún archivo, Athena ya tenía configurada esa fecha dentro del rango de proyección. Cuando subimos el archivo entregas/fecha=2026-10-03/entregas.csv, Athena pudo encontrarlo y leer sus registros sin necesidad de crear una partición nueva
+Las evidencias muestran que al consultar Glue con aws glue get-partitions aparecen 0 particiones, tanto antes como después de cargar el tercer día. En resultados/final/verificacion_tercer_dia.csv aparecen los seis registros correspondientes al 3 de octubre, desde ENV-013 hasta ENV-018. Además, en resultados/final/verificacion_total_registros.csv se confirma que hay 18 registros distribuidos en las tres fechas
+En conclusión, pudimos consultar el tercer día porque ya estaba incluido en el rango de la proyección. Lo único que hacía falta era subir el archivo a la ruta correspondiente de S3. No fue necesario utilizar un crawler ni registrar particiones manualmente
 
 ## 2. Si se subiera un archivo para el 4 de octubre manteniendo la configuración actual, ¿qué resultado se esperaría y qué se debería modificar para incluirlo?
 
-**Resultado esperado:** el archivo quedaría guardado en S3, pero Athena no lo leería. El rango
-proyectado termina en `2026-10-03`, así que Athena nunca genera la fecha `2026-10-04` ni el prefijo
-`entregas/fecha=2026-10-04/`. Las consultas no darían error; simplemente ignorarían ese archivo:
+Si subiéramos un archivo correspondiente al 4 de octubre sin modificar la configuración actual, el archivo quedaría almacenado en S3, pero Athena no podría leerlo
 
-- `SELECT count(*) FROM entregas_db.entregas` seguiría devolviendo 18.
-- Una consulta con `WHERE fecha = '2026-10-04'` devolvería cero filas.
-- Las consultas agregadas seguirían mostrando solo tres fechas, como en `resultados/final/`.
+Esto sucede porque el rango de la proyección termina el 3 de octubre. Por lo tanto, Athena solamente tiene en cuenta las fechas del 1, 2 y 3 de octubre y no genera la ruta correspondiente al día 4
 
-Es la otra cara de la pregunta 1: con partition projection, el catálogo no "descubre" archivos; lo
-que se puede consultar lo deciden las reglas de la tabla.
+En ese caso, si ejecutamos SELECT count(*) FROM entregas_db.entregas, seguiríamos obteniendo 18 registros. Si consultamos específicamente la fecha 2026-10-04, obtendríamos cero registros y las consultas agrupadas por fecha seguirían mostrando únicamente los tres días anteriores
 
-**Qué modificar:** ampliar el rango de la proyección en Terraform, no registrar una partición. En
-`infraestructura/variables.tf` el fin del rango es la variable `fecha_fin_proyeccion`; basta con
-cambiarla a `2026-10-04` (o a una fecha posterior, para cubrir los próximos días) y aplicar:
+Para solucionar esto, tendríamos que modificar el rango de fechas de la proyección en Terraform
 
-```bash
+En este caso, la fecha final se controla mediante la variable fecha_fin_proyeccion, que se encuentra en infraestructura/variables.tf. Lo único que tendríamos que hacer es cambiarla para que incluya el 4 de octubre y después ejecutar el siguiente comando
+
+en bash
 cd infraestructura
 terraform apply -var fecha_fin_proyeccion=2026-10-04
-```
 
-Terraform solo actualiza la propiedad `projection.fecha.range` de la tabla. Desde ese momento el 4
-de octubre queda dentro de la proyección y su archivo se consulta igual que el día 3: subirlo y
-consultar, sin crawlers ni particiones nuevas. El archivo debe respetar la misma ruta
-(`entregas/fecha=2026-10-04/entregas.csv`) y el mismo esquema de cinco columnas.
 
-Si se espera recibir un archivo cada día, también se podría usar un rango relativo, por ejemplo
-`2026-10-01,NOW`, para que la proyección avance sola con la fecha actual. En este ejercicio no se
-hizo así porque el enunciado pide proyectar exactamente del 1 al 3 de octubre.
+Con esto, Terraform actualizaría la configuración de la tabla en Glue y Athena ya podría incluir el 4 de octubre dentro de las fechas que consulta
+
+Una vez aplicado el cambio, solo tendríamos que subir el archivo a la ruta correspondiente entregas/fecha=2026-10-04/entregas.csv, manteniendo el mismo esquema de cinco columnas que los archivos anteriores
+
+También existe la posibilidad de configurar un rango dinámico, por ejemplo 2026-10-01,NOW, para que la proyección incluya automáticamente las fechas hasta el día actual. Esto sería útil si se van a recibir archivos diariamente
+
+Sin embargo, para este ejercicio se mantuvo un rango específico del 1 al 3 de octubre, tal como lo pedía el enunciado
+
+En conclusión, para incluir nuevos días no necesitamos crear particiones manualmente. Simplemente debemos ampliar el rango de fechas de la proyección y asegurarnos de que los archivos estén guardados en la ruta correcta de S3
