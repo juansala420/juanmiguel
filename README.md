@@ -207,4 +207,33 @@ sigue correspondiendo al día 2 y no se vuelve a ejecutar.
 
 ## 5. Limpieza
 
-_Pendiente._
+Primero se guardan y se versionan todas las evidencias (resultados, ejecuciones y salidas de
+Terraform). Después se vacía el bucket, que contiene los CSV de `entregas/` y los resultados de
+Athena en `resultados-athena/`; Terraform no elimina un bucket con objetos.
+
+```bash
+aws s3 rm s3://de-final-entregas-gr01-user-6 --recursive
+aws s3 ls s3://de-final-entregas-gr01-user-6 --recursive   # no debe listar nada
+```
+
+Luego se eliminan con Terraform los siete recursos del ejercicio (bucket y sus tres
+configuraciones, base de datos, tabla y workgroup):
+
+```bash
+cd infraestructura
+terraform destroy -no-color 2>&1 | tee ../evidencias/eliminacion_terraform.txt
+cd ..
+```
+
+El resultado fue `Destroy complete! Resources: 7 destroyed.`
+(`evidencias/eliminacion_terraform.txt`). Para comprobar que no queda nada:
+
+```bash
+aws s3api head-bucket --bucket de-final-entregas-gr01-user-6          # 404 Not Found
+aws glue get-database --name entregas_db                               # EntityNotFoundException
+aws athena get-work-group --work-group entregas-wg                     # no existe
+terraform -chdir=infraestructura state list                            # vacío
+```
+
+El archivo de estado de Terraform y la carpeta `.terraform/` quedan solo en el equipo local:
+están excluidos por `.gitignore` y no forman parte de la entrega.
