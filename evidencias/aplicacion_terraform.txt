@@ -1,261 +1,261 @@
 
 Terraform used the selected providers to generate the following execution
 plan. Resource actions are indicated with the following symbols:
-  [32m+[0m create[0m
+  + create
 
 Terraform will perform the following actions:
 
-[1m  # aws_athena_workgroup.entregas[0m will be created
-[0m  [32m+[0m[0m resource "aws_athena_workgroup" "entregas" {
-      [32m+[0m[0m arn           = (known after apply)
-      [32m+[0m[0m description   = "Consultas del ejercicio de entregas"
-      [32m+[0m[0m force_destroy = true
-      [32m+[0m[0m id            = (known after apply)
-      [32m+[0m[0m name          = "entregas-wg"
-      [32m+[0m[0m region        = "us-east-1"
-      [32m+[0m[0m state         = "ENABLED"
-      [32m+[0m[0m tags_all      = {
-          [32m+[0m[0m "Gestion"  = "Terraform"
-          [32m+[0m[0m "Proyecto" = "DE-Final-Entregas"
+  # aws_athena_workgroup.entregas will be created
+  + resource "aws_athena_workgroup" "entregas" {
+      + arn           = (known after apply)
+      + description   = "Consultas del ejercicio de entregas"
+      + force_destroy = true
+      + id            = (known after apply)
+      + name          = "entregas-wg"
+      + region        = "us-east-1"
+      + state         = "ENABLED"
+      + tags_all      = {
+          + "Gestion"  = "Terraform"
+          + "Proyecto" = "DE-Final-Entregas"
         }
 
-      [32m+[0m[0m configuration {
-          [32m+[0m[0m enable_minimum_encryption_configuration = (known after apply)
-          [32m+[0m[0m enforce_workgroup_configuration         = true
-          [32m+[0m[0m publish_cloudwatch_metrics_enabled      = false
-          [32m+[0m[0m requester_pays_enabled                  = false
+      + configuration {
+          + enable_minimum_encryption_configuration = (known after apply)
+          + enforce_workgroup_configuration         = true
+          + publish_cloudwatch_metrics_enabled      = false
+          + requester_pays_enabled                  = false
 
-          [32m+[0m[0m result_configuration {
-              [32m+[0m[0m output_location = "s3://de-final-entregas-gr01-user-6/resultados-athena/"
+          + result_configuration {
+              + output_location = "s3://de-final-entregas-gr01-user-6/resultados-athena/"
 
-              [32m+[0m[0m encryption_configuration {
-                  [32m+[0m[0m encryption_option = "SSE_S3"
+              + encryption_configuration {
+                  + encryption_option = "SSE_S3"
                 }
             }
         }
     }
 
-[1m  # aws_glue_catalog_database.entregas[0m will be created
-[0m  [32m+[0m[0m resource "aws_glue_catalog_database" "entregas" {
-      [32m+[0m[0m arn          = (known after apply)
-      [32m+[0m[0m catalog_id   = (known after apply)
-      [32m+[0m[0m description  = "Catálogo de los intentos de entrega diarios"
-      [32m+[0m[0m id           = (known after apply)
-      [32m+[0m[0m location_uri = (known after apply)
-      [32m+[0m[0m name         = "entregas_db"
-      [32m+[0m[0m region       = "us-east-1"
-      [32m+[0m[0m tags_all     = {
-          [32m+[0m[0m "Gestion"  = "Terraform"
-          [32m+[0m[0m "Proyecto" = "DE-Final-Entregas"
+  # aws_glue_catalog_database.entregas will be created
+  + resource "aws_glue_catalog_database" "entregas" {
+      + arn          = (known after apply)
+      + catalog_id   = (known after apply)
+      + description  = "Catálogo de los intentos de entrega diarios"
+      + id           = (known after apply)
+      + location_uri = (known after apply)
+      + name         = "entregas_db"
+      + region       = "us-east-1"
+      + tags_all     = {
+          + "Gestion"  = "Terraform"
+          + "Proyecto" = "DE-Final-Entregas"
         }
 
-      [32m+[0m[0m create_table_default_permission (known after apply)
+      + create_table_default_permission (known after apply)
     }
 
-[1m  # aws_glue_catalog_table.entregas[0m will be created
-[0m  [32m+[0m[0m resource "aws_glue_catalog_table" "entregas" {
-      [32m+[0m[0m arn           = (known after apply)
-      [32m+[0m[0m catalog_id    = (known after apply)
-      [32m+[0m[0m database_name = "entregas_db"
-      [32m+[0m[0m description   = "Intentos de entrega; una carpeta fecha=yyyy-MM-dd por día"
-      [32m+[0m[0m id            = (known after apply)
-      [32m+[0m[0m name          = "entregas"
-      [32m+[0m[0m parameters    = {
-          [32m+[0m[0m "EXTERNAL"                       = "TRUE"
-          [32m+[0m[0m "classification"                 = "csv"
-          [32m+[0m[0m "projection.enabled"             = "true"
-          [32m+[0m[0m "projection.fecha.format"        = "yyyy-MM-dd"
-          [32m+[0m[0m "projection.fecha.interval"      = "1"
-          [32m+[0m[0m "projection.fecha.interval.unit" = "DAYS"
-          [32m+[0m[0m "projection.fecha.range"         = "2026-10-01,2026-10-03"
-          [32m+[0m[0m "projection.fecha.type"          = "date"
-          [32m+[0m[0m "skip.header.line.count"         = "1"
-          [32m+[0m[0m "storage.location.template"      = "s3://de-final-entregas-gr01-user-6/entregas/fecha=${fecha}/"
+  # aws_glue_catalog_table.entregas will be created
+  + resource "aws_glue_catalog_table" "entregas" {
+      + arn           = (known after apply)
+      + catalog_id    = (known after apply)
+      + database_name = "entregas_db"
+      + description   = "Intentos de entrega; una carpeta fecha=yyyy-MM-dd por día"
+      + id            = (known after apply)
+      + name          = "entregas"
+      + parameters    = {
+          + "EXTERNAL"                       = "TRUE"
+          + "classification"                 = "csv"
+          + "projection.enabled"             = "true"
+          + "projection.fecha.format"        = "yyyy-MM-dd"
+          + "projection.fecha.interval"      = "1"
+          + "projection.fecha.interval.unit" = "DAYS"
+          + "projection.fecha.range"         = "2026-10-01,2026-10-03"
+          + "projection.fecha.type"          = "date"
+          + "skip.header.line.count"         = "1"
+          + "storage.location.template"      = "s3://de-final-entregas-gr01-user-6/entregas/fecha=${fecha}/"
         }
-      [32m+[0m[0m region        = "us-east-1"
-      [32m+[0m[0m table_type    = "EXTERNAL_TABLE"
+      + region        = "us-east-1"
+      + table_type    = "EXTERNAL_TABLE"
 
-      [32m+[0m[0m partition_index (known after apply)
+      + partition_index (known after apply)
 
-      [32m+[0m[0m partition_keys {
-          [32m+[0m[0m comment = "Fecha del archivo, tomada de la carpeta fecha=yyyy-MM-dd"
-          [32m+[0m[0m name    = "fecha"
-          [32m+[0m[0m type    = "string"
+      + partition_keys {
+          + comment = "Fecha del archivo, tomada de la carpeta fecha=yyyy-MM-dd"
+          + name    = "fecha"
+          + type    = "string"
         }
 
-      [32m+[0m[0m storage_descriptor {
-          [32m+[0m[0m additional_locations = (known after apply)
-          [32m+[0m[0m bucket_columns       = (known after apply)
-          [32m+[0m[0m input_format         = "org.apache.hadoop.mapred.TextInputFormat"
-          [32m+[0m[0m location             = "s3://de-final-entregas-gr01-user-6/entregas/"
-          [32m+[0m[0m output_format        = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
-          [32m+[0m[0m parameters           = (known after apply)
+      + storage_descriptor {
+          + additional_locations = (known after apply)
+          + bucket_columns       = (known after apply)
+          + input_format         = "org.apache.hadoop.mapred.TextInputFormat"
+          + location             = "s3://de-final-entregas-gr01-user-6/entregas/"
+          + output_format        = "org.apache.hadoop.hive.ql.io.HiveIgnoreKeyTextOutputFormat"
+          + parameters           = (known after apply)
 
-          [32m+[0m[0m columns {
-              [32m+[0m[0m comment    = "Identificador único del envío"
-              [32m+[0m[0m name       = "id_envio"
-              [32m+[0m[0m parameters = (known after apply)
-              [32m+[0m[0m type       = "string"
+          + columns {
+              + comment    = "Identificador único del envío"
+              + name       = "id_envio"
+              + parameters = (known after apply)
+              + type       = "string"
             }
-          [32m+[0m[0m columns {
-              [32m+[0m[0m comment    = "Ciudad del intento de entrega"
-              [32m+[0m[0m name       = "ciudad"
-              [32m+[0m[0m parameters = (known after apply)
-              [32m+[0m[0m type       = "string"
+          + columns {
+              + comment    = "Ciudad del intento de entrega"
+              + name       = "ciudad"
+              + parameters = (known after apply)
+              + type       = "string"
             }
-          [32m+[0m[0m columns {
-              [32m+[0m[0m comment    = "Transportadora responsable del intento"
-              [32m+[0m[0m name       = "transportadora"
-              [32m+[0m[0m parameters = (known after apply)
-              [32m+[0m[0m type       = "string"
+          + columns {
+              + comment    = "Transportadora responsable del intento"
+              + name       = "transportadora"
+              + parameters = (known after apply)
+              + type       = "string"
             }
-          [32m+[0m[0m columns {
-              [32m+[0m[0m comment    = "entregado, destinatario_ausente o direccion_incorrecta"
-              [32m+[0m[0m name       = "estado"
-              [32m+[0m[0m parameters = (known after apply)
-              [32m+[0m[0m type       = "string"
+          + columns {
+              + comment    = "entregado, destinatario_ausente o direccion_incorrecta"
+              + name       = "estado"
+              + parameters = (known after apply)
+              + type       = "string"
             }
-          [32m+[0m[0m columns {
-              [32m+[0m[0m comment    = "Minutos de la entrega; 0 en los intentos fallidos"
-              [32m+[0m[0m name       = "duracion_minutos"
-              [32m+[0m[0m parameters = (known after apply)
-              [32m+[0m[0m type       = "int"
+          + columns {
+              + comment    = "Minutos de la entrega; 0 en los intentos fallidos"
+              + name       = "duracion_minutos"
+              + parameters = (known after apply)
+              + type       = "int"
             }
 
-          [32m+[0m[0m ser_de_info {
-              [32m+[0m[0m name                  = "csv"
-              [32m+[0m[0m parameters            = {
-                  [32m+[0m[0m "field.delim"          = ","
-                  [32m+[0m[0m "serialization.format" = ","
+          + ser_de_info {
+              + name                  = "csv"
+              + parameters            = {
+                  + "field.delim"          = ","
+                  + "serialization.format" = ","
                 }
-              [32m+[0m[0m serialization_library = "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe"
+              + serialization_library = "org.apache.hadoop.hive.serde2.lazy.LazySimpleSerDe"
             }
         }
 
-      [32m+[0m[0m view_definition (known after apply)
+      + view_definition (known after apply)
     }
 
-[1m  # aws_s3_bucket.entregas[0m will be created
-[0m  [32m+[0m[0m resource "aws_s3_bucket" "entregas" {
-      [32m+[0m[0m acceleration_status         = (known after apply)
-      [32m+[0m[0m acl                         = (known after apply)
-      [32m+[0m[0m arn                         = (known after apply)
-      [32m+[0m[0m bucket                      = "de-final-entregas-gr01-user-6"
-      [32m+[0m[0m bucket_domain_name          = (known after apply)
-      [32m+[0m[0m bucket_namespace            = (known after apply)
-      [32m+[0m[0m bucket_prefix               = (known after apply)
-      [32m+[0m[0m bucket_region               = (known after apply)
-      [32m+[0m[0m bucket_regional_domain_name = (known after apply)
-      [32m+[0m[0m force_destroy               = false
-      [32m+[0m[0m hosted_zone_id              = (known after apply)
-      [32m+[0m[0m id                          = (known after apply)
-      [32m+[0m[0m object_lock_enabled         = (known after apply)
-      [32m+[0m[0m policy                      = (known after apply)
-      [32m+[0m[0m region                      = "us-east-1"
-      [32m+[0m[0m request_payer               = (known after apply)
-      [32m+[0m[0m tags_all                    = {
-          [32m+[0m[0m "Gestion"  = "Terraform"
-          [32m+[0m[0m "Proyecto" = "DE-Final-Entregas"
+  # aws_s3_bucket.entregas will be created
+  + resource "aws_s3_bucket" "entregas" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      + arn                         = (known after apply)
+      + bucket                      = "de-final-entregas-gr01-user-6"
+      + bucket_domain_name          = (known after apply)
+      + bucket_namespace            = (known after apply)
+      + bucket_prefix               = (known after apply)
+      + bucket_region               = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + object_lock_enabled         = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = "us-east-1"
+      + request_payer               = (known after apply)
+      + tags_all                    = {
+          + "Gestion"  = "Terraform"
+          + "Proyecto" = "DE-Final-Entregas"
         }
-      [32m+[0m[0m website_domain              = (known after apply)
-      [32m+[0m[0m website_endpoint            = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
 
-      [32m+[0m[0m cors_rule (known after apply)
+      + cors_rule (known after apply)
 
-      [32m+[0m[0m grant (known after apply)
+      + grant (known after apply)
 
-      [32m+[0m[0m lifecycle_rule (known after apply)
+      + lifecycle_rule (known after apply)
 
-      [32m+[0m[0m logging (known after apply)
+      + logging (known after apply)
 
-      [32m+[0m[0m object_lock_configuration (known after apply)
+      + object_lock_configuration (known after apply)
 
-      [32m+[0m[0m replication_configuration (known after apply)
+      + replication_configuration (known after apply)
 
-      [32m+[0m[0m server_side_encryption_configuration (known after apply)
+      + server_side_encryption_configuration (known after apply)
 
-      [32m+[0m[0m versioning (known after apply)
+      + versioning (known after apply)
 
-      [32m+[0m[0m website (known after apply)
+      + website (known after apply)
     }
 
-[1m  # aws_s3_bucket_ownership_controls.entregas[0m will be created
-[0m  [32m+[0m[0m resource "aws_s3_bucket_ownership_controls" "entregas" {
-      [32m+[0m[0m bucket = (known after apply)
-      [32m+[0m[0m id     = (known after apply)
-      [32m+[0m[0m region = "us-east-1"
+  # aws_s3_bucket_ownership_controls.entregas will be created
+  + resource "aws_s3_bucket_ownership_controls" "entregas" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+      + region = "us-east-1"
 
-      [32m+[0m[0m rule {
-          [32m+[0m[0m object_ownership = "BucketOwnerEnforced"
+      + rule {
+          + object_ownership = "BucketOwnerEnforced"
         }
     }
 
-[1m  # aws_s3_bucket_public_access_block.entregas[0m will be created
-[0m  [32m+[0m[0m resource "aws_s3_bucket_public_access_block" "entregas" {
-      [32m+[0m[0m block_public_acls       = true
-      [32m+[0m[0m block_public_policy     = true
-      [32m+[0m[0m bucket                  = (known after apply)
-      [32m+[0m[0m id                      = (known after apply)
-      [32m+[0m[0m ignore_public_acls      = true
-      [32m+[0m[0m region                  = "us-east-1"
-      [32m+[0m[0m restrict_public_buckets = true
+  # aws_s3_bucket_public_access_block.entregas will be created
+  + resource "aws_s3_bucket_public_access_block" "entregas" {
+      + block_public_acls       = true
+      + block_public_policy     = true
+      + bucket                  = (known after apply)
+      + id                      = (known after apply)
+      + ignore_public_acls      = true
+      + region                  = "us-east-1"
+      + restrict_public_buckets = true
     }
 
-[1m  # aws_s3_bucket_server_side_encryption_configuration.entregas[0m will be created
-[0m  [32m+[0m[0m resource "aws_s3_bucket_server_side_encryption_configuration" "entregas" {
-      [32m+[0m[0m bucket = (known after apply)
-      [32m+[0m[0m id     = (known after apply)
-      [32m+[0m[0m region = "us-east-1"
+  # aws_s3_bucket_server_side_encryption_configuration.entregas will be created
+  + resource "aws_s3_bucket_server_side_encryption_configuration" "entregas" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+      + region = "us-east-1"
 
-      [32m+[0m[0m rule {
-          [32m+[0m[0m blocked_encryption_types = (known after apply)
-          [32m+[0m[0m bucket_key_enabled       = (known after apply)
+      + rule {
+          + blocked_encryption_types = (known after apply)
+          + bucket_key_enabled       = (known after apply)
 
-          [32m+[0m[0m apply_server_side_encryption_by_default {
-              [32m+[0m[0m kms_master_key_id = (known after apply)
-              [32m+[0m[0m sse_algorithm     = "AES256"
+          + apply_server_side_encryption_by_default {
+              + kms_master_key_id = (known after apply)
+              + sse_algorithm     = "AES256"
             }
         }
     }
 
-[1mPlan:[0m [0m7 to add, 0 to change, 0 to destroy.
+Plan: 7 to add, 0 to change, 0 to destroy.
 
 Changes to Outputs:
-  [32m+[0m[0m base_datos                  = "entregas_db"
-  [32m+[0m[0m bucket                      = "de-final-entregas-gr01-user-6"
-  [32m+[0m[0m bucket_arn                  = (known after apply)
-  [32m+[0m[0m rango_proyeccion            = "2026-10-01,2026-10-03"
-  [32m+[0m[0m tabla                       = "entregas"
-  [32m+[0m[0m tabla_completa              = "entregas_db.entregas"
-  [32m+[0m[0m ubicacion_datos             = "s3://de-final-entregas-gr01-user-6/entregas/"
-  [32m+[0m[0m ubicacion_resultados_athena = "s3://de-final-entregas-gr01-user-6/resultados-athena/"
-  [32m+[0m[0m workgroup                   = "entregas-wg"
-[0m[1m
-Do you want to perform these actions?[0m
+  + base_datos                  = "entregas_db"
+  + bucket                      = "de-final-entregas-gr01-user-6"
+  + bucket_arn                  = (known after apply)
+  + rango_proyeccion            = "2026-10-01,2026-10-03"
+  + tabla                       = "entregas"
+  + tabla_completa              = "entregas_db.entregas"
+  + ubicacion_datos             = "s3://de-final-entregas-gr01-user-6/entregas/"
+  + ubicacion_resultados_athena = "s3://de-final-entregas-gr01-user-6/resultados-athena/"
+  + workgroup                   = "entregas-wg"
+
+Do you want to perform these actions?
   Terraform will perform the actions described above.
   Only 'yes' will be accepted to approve.
 
-  [1mEnter a value:[0m [0m
-[0m[1maws_glue_catalog_database.entregas: Creating...[0m[0m
-[0m[1maws_s3_bucket.entregas: Creating...[0m[0m
-[0m[1maws_glue_catalog_database.entregas: Creation complete after 0s [id=802655955683:entregas_db][0m
-[0m[1maws_s3_bucket.entregas: Creation complete after 2s [id=de-final-entregas-gr01-user-6][0m
-[0m[1maws_s3_bucket_public_access_block.entregas: Creating...[0m[0m
-[0m[1maws_s3_bucket_ownership_controls.entregas: Creating...[0m[0m
-[0m[1maws_s3_bucket_server_side_encryption_configuration.entregas: Creating...[0m[0m
-[0m[1maws_athena_workgroup.entregas: Creating...[0m[0m
-[0m[1maws_glue_catalog_table.entregas: Creating...[0m[0m
-[0m[1maws_s3_bucket_ownership_controls.entregas: Creation complete after 1s [id=de-final-entregas-gr01-user-6][0m
-[0m[1maws_glue_catalog_table.entregas: Creation complete after 1s [id=802655955683:entregas_db:entregas][0m
-[0m[1maws_s3_bucket_public_access_block.entregas: Creation complete after 1s [id=de-final-entregas-gr01-user-6][0m
-[0m[1maws_s3_bucket_server_side_encryption_configuration.entregas: Creation complete after 1s [id=de-final-entregas-gr01-user-6][0m
-[0m[1maws_athena_workgroup.entregas: Creation complete after 1s [id=entregas-wg][0m
-[0m[1m[32m
-Apply complete! Resources: 7 added, 0 changed, 0 destroyed.[0m
-[0m[1m[32m
+  Enter a value: 
+aws_glue_catalog_database.entregas: Creating...
+aws_s3_bucket.entregas: Creating...
+aws_glue_catalog_database.entregas: Creation complete after 0s [id=802655955683:entregas_db]
+aws_s3_bucket.entregas: Creation complete after 2s [id=de-final-entregas-gr01-user-6]
+aws_s3_bucket_public_access_block.entregas: Creating...
+aws_s3_bucket_ownership_controls.entregas: Creating...
+aws_s3_bucket_server_side_encryption_configuration.entregas: Creating...
+aws_athena_workgroup.entregas: Creating...
+aws_glue_catalog_table.entregas: Creating...
+aws_s3_bucket_ownership_controls.entregas: Creation complete after 1s [id=de-final-entregas-gr01-user-6]
+aws_glue_catalog_table.entregas: Creation complete after 1s [id=802655955683:entregas_db:entregas]
+aws_s3_bucket_public_access_block.entregas: Creation complete after 1s [id=de-final-entregas-gr01-user-6]
+aws_s3_bucket_server_side_encryption_configuration.entregas: Creation complete after 1s [id=de-final-entregas-gr01-user-6]
+aws_athena_workgroup.entregas: Creation complete after 1s [id=entregas-wg]
+
+Apply complete! Resources: 7 added, 0 changed, 0 destroyed.
+
 Outputs:
 
-[0mbase_datos = "entregas_db"
+base_datos = "entregas_db"
 bucket = "de-final-entregas-gr01-user-6"
 bucket_arn = "arn:aws:s3:::de-final-entregas-gr01-user-6"
 rango_proyeccion = "2026-10-01,2026-10-03"
